@@ -1,0 +1,51 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "eslint:recommended",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "arrowParens": "always",
+        "semi": false,
+        "tabWidth": 2,
+        "trailingComma": "es5"
+      }
+    ],
+    "curly": ["error", "all"],
+    "quotes": [
+      "error",
+      "double",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": false
+      }
+    ],
+    "semi": ["error", "never"],
+    "brace-style": [
+      "error",
+      "1tbs",
+      {
+        "allowSingleLine": true
+      }
+    ],
+    "no-console": "warn",
+    "@typescript-eslint/naming-convention": "warn",
+    "@typescript-eslint/type-annotation-spacing": "error",
+    "@typescript-eslint/camelcase": 0
+  },
+  "root": true,
+  "env": {
+    "es2020": true,
+    "jest": true,
+    "node": true
+  },
+  "globals": {
+    "process": true
+  },
+  "plugins": ["@typescript-eslint", "prettier"]
+}
