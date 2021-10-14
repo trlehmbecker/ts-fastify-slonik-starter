@@ -4,25 +4,32 @@ import { bootstrap } from "fastify-decorators"
 import "reflect-metadata"
 import loadConfig from "./config"
 
-const server: FastifyInstance = Fastify({})
-
-const start = async () => {
+export async function createServer(): Promise<FastifyInstance> {
   const config = await loadConfig()
+  const server: FastifyInstance = Fastify({})
+  server.decorate("config", config)
 
   // Setup Slonik
-  server.register(fastifySlonik, { connectionString: config.databaseUrl })
+  server.register(fastifySlonik, { connectionString: server.config.databaseUrl })
 
   // Register handlers auto-bootstrap
   server.register(bootstrap, {
     // Specify directory with our controllers
-    directory: config.paths.controllers,
+    directory: server.config.paths.controllers,
 
     // Specify mask to match only our controllers
     mask: /\.controller\./,
   })
 
+  await server.ready()
+  return server
+}
+
+export async function start(): Promise<void> {
+  const server = await createServer()
+
   try {
-    await server.listen(config.httpPort)
+    await server.listen(server.config.httpPort)
     const address = server.server.address()
     const port = typeof address === "string" ? address : address?.port
     console.log(`Server listening on port ${port}`)
@@ -32,4 +39,6 @@ const start = async () => {
   }
 }
 
-start()
+if (process.env.NODE_ENV !== "test") {
+  start()
+}

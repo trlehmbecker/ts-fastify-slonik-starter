@@ -1,6 +1,6 @@
 import { UserService } from "../services/user.service"
 import { FastifyReply, FastifyRequest, FastifySchema } from "fastify"
-import { Controller, GET, POST, PATCH, DELETE } from "fastify-decorators"
+import { Controller, GET, POST, DELETE } from "fastify-decorators"
 import { userSerializer } from "../services/user-serializer.service"
 import { Serializer } from "ts-japi"
 

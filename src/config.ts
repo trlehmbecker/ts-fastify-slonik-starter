@@ -1,6 +1,6 @@
 import { basename, resolve, dirname } from "path"
 
-interface AppConfig {
+export interface AppConfig {
   mode: string
   httpPort: string | number
   databaseUrl: string
@@ -13,14 +13,15 @@ interface AppConfig {
 const loadConfig = async (): Promise<AppConfig> => {
   const mode: string = process.env.NODE_ENV || "production"
 
-  if (mode === "development") {
+  if (mode === "development" || mode === "test") {
     const { config } = await import("dotenv")
-    config()
+    const envFile = mode === "test" ? "test.env" : ".env"
+    config({ path: envFile })
   }
 
   const appConfig: AppConfig = {
     mode,
-    httpPort: process.env.HTTP_PORT || 0,
+    httpPort: process.env.HTTP_PORT || 80,
     databaseUrl: process.env.DATABASE_URL || "",
     paths: {
       controllers: resolve(__dirname, "controllers"),
